@@ -49,7 +49,8 @@ import WebKit
 class BCLViewController: CAPBridgeViewController {
     override func capacitorDidLoad() {
         super.capacitorDidLoad()
-        guard let url = Bundle.main.url(forResource: "app-patch", withExtension: "js", subdirectory: "public"),
+        guard let url = Bundle.main.url(forResource: "app-patch", withExtension: "js", subdirectory: "public")
+                ?? Bundle.main.url(forResource: "app-patch", withExtension: "js"),
               let source = try? String(contentsOf: url, encoding: .utf8),
               let controller = webView?.configuration.userContentController else { return }
         controller.addUserScript(WKUserScript(source: source, injectionTime: .atDocumentStart, forMainFrameOnly: false))

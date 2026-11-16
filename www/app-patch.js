@@ -3,6 +3,8 @@
  * File ini disisipkan otomatis oleh aplikasi Android & iOS ke setiap halaman cm.bclinnk.com.
  */
 (function () {
+  var h = (window.location && window.location.hostname) || '';
+  if (h && !/bclinnk\.com|bookandlink\.com/i.test(h)) return;
   if (window.__bclPatchLoaded) return;
   window.__bclPatchLoaded = true;
 
@@ -2145,19 +2147,28 @@
     }
   }
 
+  var observerAttached = false;
+  var pending = false;
+
+  function attachObserver() {
+    if (observerAttached) return;
+    var target = document.documentElement || document;
+    if (!target) return;
+    observerAttached = true;
+    new MutationObserver(function () {
+      if (pending) return;
+      pending = true;
+      requestAnimationFrame(function () { pending = false; run(); });
+    }).observe(target, { childList: true, subtree: true });
+  }
+
   function run() {
     ensureStyle();
+    attachObserver();
     try { domFixes(); } catch (e) { /* abaikan */ }
   }
 
   run();
   document.addEventListener('DOMContentLoaded', run);
   window.addEventListener('load', run);
-
-  var pending = false;
-  new MutationObserver(function () {
-    if (pending) return;
-    pending = true;
-    requestAnimationFrame(function () { pending = false; run(); });
-  }).observe(document.documentElement, { childList: true, subtree: true });
 })();
