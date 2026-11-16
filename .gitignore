@@ -1,0 +1,14 @@
+node_modules/
+.tools/
+keystore/
+android/keystore.properties
+dist/
+*.jks
+*.keystore
+BACKUP-KUNCI-*.zip
+icons/*.webp
+debug/
+bclinnk-ios-build/
+bclinnk-ios-build.zip
+build/
+.DS_Store

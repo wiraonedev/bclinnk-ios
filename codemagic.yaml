@@ -1,0 +1,54 @@
+# Codemagic CI – BCLinnk
+# Workflow "ios-simulator": build aplikasi iOS untuk Simulator (tanpa akun Apple Developer)
+# Hasil: BCLinnk-simulator.zip -> upload ke https://appetize.io untuk dicoba di browser.
+workflows:
+  ios-simulator:
+    name: iOS Simulator (untuk Appetize)
+    instance_type: mac_mini_m2
+    max_build_duration: 30
+    environment:
+      xcode: latest
+      node: 22
+      # Opsional (upload otomatis ke Appetize):
+      # 1) Codemagic > app > Environment variables > tambah APPETIZE_TOKEN di group "appetize"
+      # 2) Hapus tanda # pada 2 baris di bawah ini
+      # groups:
+      #   - appetize
+    triggering:
+      events: []   # build manual dari dashboard Codemagic
+    scripts:
+      - name: Install dependencies
+        script: npm ci || npm install
+      - name: Sync Capacitor iOS
+        script: npx cap sync ios
+      - name: Build untuk iOS Simulator
+        script: |
+          xcodebuild \
+            -project ios/App/App.xcodeproj \
+            -scheme App \
+            -configuration Debug \
+            -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath build/ios \
+            CODE_SIGNING_ALLOWED=NO \
+            build
+      - name: Zip file .app
+        script: |
+          mkdir -p dist
+          cd build/ios/Build/Products/Debug-iphonesimulator
+          zip -r -y "$CM_BUILD_DIR/dist/BCLinnk-simulator.zip" App.app
+      - name: Upload otomatis ke Appetize (jika APPETIZE_TOKEN diisi)
+        script: |
+          if [ -z "$APPETIZE_TOKEN" ]; then
+            echo "APPETIZE_TOKEN tidak diisi - lewati. Download artifact lalu upload manual ke appetize.io"
+            exit 0
+          fi
+          curl -sS --fail -X POST https://api.appetize.io/v1/apps \
+            -H "X-API-KEY: $APPETIZE_TOKEN" \
+            -F "file=@dist/BCLinnk-simulator.zip" \
+            -F "platform=ios" | tee dist/appetize-result.json
+          echo ""
+          echo "Buka link 'publicURL' di atas untuk mencoba aplikasi."
+    artifacts:
+      - dist/*.zip
+      - dist/*.json

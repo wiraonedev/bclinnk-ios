@@ -1,0 +1,33 @@
+{
+  "appId": "com.bclinnk.cm",
+  "appName": "BCLinnk",
+  "webDir": "www",
+  "server": {
+    "url": "https://cm.bclinnk.com/dashboard",
+    "cleartext": false,
+    "allowNavigation": ["cm.bclinnk.com", "*.bclinnk.com"],
+    "errorPath": "offline.html"
+  },
+  "android": {
+    "allowMixedContent": false,
+    "captureInput": true,
+    "webContentsDebuggingEnabled": false
+  },
+  "ios": {
+    "contentInset": "automatic",
+    "limitsNavigationsToAppBoundDomains": false
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1500,
+      "launchAutoHide": true,
+      "backgroundColor": "#ffffff",
+      "showSpinner": false
+    },
+    "StatusBar": {
+      "overlaysWebView": false,
+      "style": "LIGHT",
+      "backgroundColor": "#ffffff"
+    }
+  }
+}
