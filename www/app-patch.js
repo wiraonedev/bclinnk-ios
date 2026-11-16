@@ -2024,8 +2024,8 @@
         svg: '<path d="M9 12l2.2 2.2L16.5 9"/><rect x="3.5" y="4.5" width="17" height="15" rx="2"/>'
       },
       {
-        name: 'Bookings',
-        sub: 'Reservation List',
+        name: 'Reservation System',
+        sub: 'Booking Management',
         svg: '<rect x="3" y="4.5" width="18" height="16.5" rx="2"/><path d="M16 2.5v4"/><path d="M8 2.5v4"/><path d="M3 9.5h18"/>'
       }
     ];
