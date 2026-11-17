@@ -10,5 +10,7 @@ icons/*.webp
 debug/
 bclinnk-ios-build/
 bclinnk-ios-build.zip
+ios/BCLinnk-simulator/
+ios/BCLinnk-simulator.zip
 build/
 .DS_Store
